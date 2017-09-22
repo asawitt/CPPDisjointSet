@@ -33,6 +33,15 @@ class DisjointSet {
 			if (rank[y_root] == rank[x_root]) rank[y_root]++;
 
 		}
+		//int x: Returns the number of elements in the set which contains x
+		int size(int x){
+			int x_root = this->find(x);
+			int size = 0;
+			for (std::map<int,int> ele : parent){
+				if (this->find(ele.first) == x_root) size++; 
+			}
+			return size;
+		}
 		void print(){
 			std::map<int,std::set<int>> sets;
 			for (std::pair<int,int> ele : parent){
