@@ -37,7 +37,7 @@ class DisjointSet {
 		int size(int x){
 			int x_root = this->find(x);
 			int size = 0;
-			for (std::map<int,int> ele : parent){
+			for (std::pair<int,int> ele : parent){
 				if (this->find(ele.first) == x_root) size++; 
 			}
 			return size;
