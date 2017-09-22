@@ -10,11 +10,13 @@
 class DisjointSet {
 	std::map<int,int> parent;
 	std::map<int,int> rank;
+	std::map<int,int> size;
 	public:
 		void makeSet(int x){
 			if (!parent[x]){
 				parent[x] = x; 
 				rank[x] = 0;
+				size[x] = 1;
 			}
 		}
 		int find(int x){
@@ -23,24 +25,24 @@ class DisjointSet {
 			}
 			return parent[x];
 		}
-		//(union)
+		//(union) Unspecified if x and/or y are not elements in any set
 		void combine(int x, int y){ 
 			int x_root = this->find(x);
 			int y_root = this->find(y);
 			if (x_root == y_root) return;
-			if (rank[x_root] > rank[y_root]) parent[y_root] = x_root;
-			else parent[x_root] = y_root;
+			if (rank[x_root] > rank[y_root]) {
+				size[x_root]+=size[y_root];
+				parent[y_root] = x_root;
+			}
+			else {
+				size[y_root]+=size[x_root];
+				parent[x_root] = y_root;
+			}
 			if (rank[y_root] == rank[x_root]) rank[y_root]++;
-
 		}
 		//int x: Returns the number of elements in the set which contains x
-		int size(int x){
-			int x_root = this->find(x);
-			int size = 0;
-			for (std::pair<int,int> ele : parent){
-				if (this->find(ele.first) == x_root) size++; 
-			}
-			return size;
+		int getSize(int x){
+			return size[this->find(x)];
 		}
 		void print(){
 			std::map<int,std::set<int>> sets;
@@ -57,5 +59,4 @@ class DisjointSet {
 			}
 		}
 };
-
 #endif
